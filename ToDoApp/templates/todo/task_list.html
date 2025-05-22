@@ -1,0 +1,49 @@
+{% extends 'base/base.html' %}
+
+{% block title %}My To-Do List{% endblock %}
+
+{% block content %}
+    <h1 class="task-list-header">Your To-Do List</h1>
+    
+    <p style="text-align: center;">
+        <a href="{% url 'create_task' %}" class="add-task-button">Add New Task</a>
+    </p>
+    
+    {% if tasks %}
+        <ul class="task-list-ul">
+            {% for task in tasks %}
+                <li class="task-list-item {% if task.completed %}task-completed{% endif %}">
+                    <div class="task-content">
+                        <span class="task-title">{{ task.title }}</span>
+                        <small class="task-due-date">Due: {{ task.due_date|default:"No due date" }}</small>
+                        {% if task.description %}
+                            <p class="task-description">{{ task.description }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="task-actions">
+                        {# Edit Link - REMAINS A DIRECT A TAG #}
+                        <a href="{% url 'update_task' task.id %}" class="task-action-button edit">Edit</a>
+                        
+                        {# Mark Complete/Incomplete - CLASS MOVED TO FORM #}
+                        <form action="{% url 'complete_task' task.id %}" method="post" class="task-action-button {% if task.completed %}incomplete{% else %}complete{% endif %}">
+                            {% csrf_token %}
+                            <button type="submit"> {# INNER BUTTON HAS NO INLINE STYLES #}
+                                {% if task.completed %}Mark Incomplete{% else %}Mark Complete{% endif %}
+                            </button>
+                        </form>
+
+                        {# Delete Task - CLASS MOVED TO FORM #}
+                        <form action="{% url 'delete_task' task.id %}" method="post" class="task-action-button delete" onclick="return confirm('Are you sure you want to delete this task?');">
+                            {% csrf_token %}
+                            <button type="submit"> {# INNER BUTTON HAS NO INLINE STYLES #}
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="task-list-empty-message">You don't have any tasks yet! Click "Add New Task" to get started.</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Edit Task{% endblock %}
+
+{% block content %}
+    <h1 class="page-title">Edit Task</h1>
+    <form method="post" class="auth-form">
+        {% csrf_token %}
+        <p>
+            <label for="id_title">Title:</label><br>
+            <input type="text" name="title" id="id_title" value="{{ task.title }}" required>
+        </p>
+
+        <p>
+            <label for="id_description">Description (optional):</label><br>
+            <textarea name="description" id="id_description" rows="4">{{ task.description|default:'' }}</textarea>
+        </p>
+
+        <p>
+            <label for="id_due_date">Due Date (YYYY-MM-DD, optional):</label><br>
+            <input type="date" name="due_date" id="id_due_date" value="{{ task.due_date|date:'Y-m-d'|default:'' }}">
+        </p>
+
+        <button type="submit">Update Task</button>
+        <p class="auth-form-link"><a href="{% url 'task_list' %}">Cancel</a></p>
+    </form>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Welcome to To-Do Genius!{% endblock %}
+
+{% block content %}
+    <header class="landing-header">
+        <h2>Your Ultimate To-Do Organizer</h2>
+        <p class="landing-text">Stay on top of your tasks and boost your productivity.</p>
+    </header>
+
+    <div class="landing-action-area">
+        {% if user.is_authenticated %}
+            <p class="landing-text">Hello, {{ user.username }}!</p>
+            <p class="landing-text">You are logged in. Ready to manage your tasks?</p>
+            <a href="{% url 'task_list' %}" class="landing-button primary">View My To-Dos</a>
+            <a href="{% url 'create_task' %}" class="landing-button secondary">Add New Task</a>
+        {% else %}
+            <p class="landing-text">Welcome to To-Do Genius! Please log in or register to get started.</p>
+            <a href="{% url 'login' %}" class="landing-button secondary">Login</a>
+            <a href="{% url 'register' %}" class="landing-button tertiary">Register</a>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base/base.html' %} {# Inherit from base.html for consistent layout #}
+
+{% block title %}Add New Task{% endblock %} {# Page specific title #}
+
+{% block content %}
+    <h1 class="page-title">Add New Task</h1>
+    <form method="post" class="auth-form"> {# Reusing auth-form for general form styling #}
+        {% csrf_token %}
+        
+        <p>
+            <label for="id_title">Title:</label><br>
+            <input type="text" name="title" id="id_title" value="{{ title|default:'' }}" required>
+        </p>
+
+        <p>
+            <label for="id_description">Description (optional):</label><br>
+            <textarea name="description" id="id_description" rows="4">{{ description|default:'' }}</textarea>
+        </p>
+
+        <p>
+            <label for="id_due_date">Due Date (YYYY-MM-DD, optional):</label><br>
+            <input type="date" name="due_date" id="id_due_date" value="{{ due_date|default:'' }}">
+        </p>
+
+        <button type="submit">Create Task</button>
+    </form>
+{% endblock %}
